@@ -27,6 +27,7 @@
 
 							setting.title = $('.lyric_title').text();
 							setting.artist = $('.lyric_artist').text();
+							$('.lyric_title, .lyric_artist').remove();
 							$('.print_lyrics').show().html('<p>'+setting.artist+' - '+setting.title+'</p><p>[간주중]</p>');
 
 							var a = audiojs.createAll({
