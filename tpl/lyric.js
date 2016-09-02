@@ -27,11 +27,11 @@
 
 							setting.title = $('.lyric_title').text();
 							setting.artist = $('.lyric_artist').text();
-							$('.print_lyrics').show().html('<p>'+setting.title+' - '+setting.artist+'</p><p>[간주중]</p>');
+							$('.print_lyrics').show().html('<p>'+setting.artist+' - '+setting.title+'</p><p>[간주중]</p>');
 
 							var a = audiojs.createAll({
 								trackEnded: function() {
-									$('.print_lyrics').html('<p>'+setting.title+' - '+setting.artist+'</p><p>[간주중]</p>');
+									$('.print_lyrics').html('<p>'+setting.artist+' - '+setting.title+'</p><p>[간주중]</p>');
 									return false;
 								}
 							});
