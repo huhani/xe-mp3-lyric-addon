@@ -5,7 +5,7 @@
 		var audio = $('div.xe_content audio');
 		var multimedia = $("div.xe_content img[multimedia_src*='.mp3']");
 		var audio_count = audio.length + multimedia.length;
-		var document_srl = location.href.getQuery('document_srl');
+		var document_srl = $('.xe_content[class*=document_]').attr('class') && $('.xe_content[class*=document_]').attr('class').replace(/.*document_([0-9]+).*/,'$1');
 		var msg = '<div class="lyric_before" style="text-align: center;">가사 로딩중</div>';
 		if(audio_count == 1){ //일단 1개까지만. 시간있으면 여러개 있을때도 동작하게 하자.
 
