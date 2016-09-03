@@ -31,6 +31,7 @@ var setting = {
 				type:"POST",
 				data: {
 					act: 'getMP3FileLyric',
+					mid: current_mid,
 					document_srl: document_srl
 				},
 
