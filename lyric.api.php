@@ -43,6 +43,7 @@ class Lyric {
 
 			$result = preg_replace("/\[([\d]{2}):([\d]{2}).([\d]{2})\](.*?)<br>/", '<div class="$1$2 ms-$3">$4</div>', $lrc);
 			$result .= '<div class="lyric_title">'.$lyric[1].'</div><div class="lyric_artist">'.$lyric[2].'</div>';
+			if($this->filename) $result .= '<div class="lyric_file">'.$this->filename.'</div>';
 			return $result;
 
 
