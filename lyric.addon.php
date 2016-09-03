@@ -42,10 +42,14 @@
 			$oTemplate = &TemplateHandler::getInstance();
 			$output = $oTemplate->compile('./addons/lyric/tpl','lyric');
 			Context::addHtmlFooter(sprintf("%s", $output));
+			if(Mobile::isFromMobilePhone()) {
+				Context::addJsFile('./addons/lyric/tpl/lyric.m.js');
+			} else {
+				Context::addJsFile('./addons/lyric/tpl/lyric.js');
+				Context::addJsFile('./addons/lyric/tpl/audio.js');
+				Context::addCSSFile('./addons/lyric/tpl/lyric.css');
+			}
 
-			Context::addJsFile('./addons/lyric/tpl/lyric.js');
-			Context::addJsFile('./addons/lyric/tpl/audio.js');
-			Context::addCSSFile('./addons/lyric/tpl/lyric.css');
 		}
 	}
 
