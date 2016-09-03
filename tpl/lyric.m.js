@@ -15,9 +15,18 @@ var setting = {
 	$(document).ready(function(){
 
 		var audio = $('div.xe_content audio');
-		var audio_count = audio.length;
+		var multimedia = $("div.xe_content img[multimedia_src*='.mp3']");
+		var audio_count = audio.length + multimedia.length;
 		var document_srl = location.href.getQuery('document_srl');
+		var msg = '<div class="lyric_before" style="text-align: center;">가사 로딩중</div>';
 		if(audio_count == 1){
+
+			if(!audio.length){
+				multimedia.before(msg);
+			} else {
+				audio.before(msg);
+			}
+
 			$.ajax({
 				type:"POST",
 				data: {
@@ -26,15 +35,41 @@ var setting = {
 				},
 
 				success: function(html) {
+					$('.lyric_before').remove();
 					if(html.error == -1) alert(html.message);
 					if(html != '' && html != 'null') {
-						var audio = $('div.xe_content audio');
-						var src = audio.find('source').length ? audio.find('source').attr('src') : audio.attr('src');
-						if(src){
+						$('.player_lyrics').html(html);
+						$('.0000.ms-00').remove();
 
-							audio.before("<center><div class='lyrics'><div class='print_lyrics' style='margin:7px 0 12px 0;'></div></div></center>");
-							audio.wrap("<center></center>");
-							audio.attr('ontimeupdate', 'updt(this)');
+						var url = $('.lyric_file').text();
+						var url_length = url.length;
+						var src;
+						var md5 = url.substring(url_length-36, url_length-4);
+
+						var audio = $('div.xe_content audio');
+						var is_audio = false;
+						if(!audio.length) { //멀티미디어 확장 컴포넌트가 비활성화일시
+							audio = $("div.xe_content img[multimedia_src*='.mp3']");
+							src = audio.attr('multimedia_src');
+						} else {
+							src = audio.find('source').length ? audio.find('source').attr('src') : audio.attr('src');
+							is_audio = true;
+						}
+
+						var src_length = src.length;
+						var src_md5 = src.substring(src_length-36, src_length-4);
+						if(src && md5 === src_md5){
+
+							if(!is_audio){
+
+								audio.replaceWith("<center style='margin: 0 0 15px 0'><div class='lyrics'><div class='print_lyrics'></div></div><audio src=\""+src+"\" preload=\"meta\" loop=\"loop\" controls=\"\" ontimeupdate=\"updt(this)\"></audio><br/></center>");
+
+							} else {
+
+								audio.before("<center><div class='lyrics'><div class='print_lyrics' style='margin:7px 0 12px 0;'></div></div></center>");
+								audio.wrap("<center></center>");
+								audio.attr('ontimeupdate', 'updt(this)');
+							}
 
 							$('.player_lyrics').html(html);
 							$('.0000.ms-00').remove();
