@@ -8,7 +8,8 @@
      **/
 
 
-	if($called_position == 'before_module_init' && Context::get('act') == 'getMP3FileLyric'){
+	if($called_position == 'before_module_init' && $_SERVER['REQUEST_METHOD'] == 'POST' && Context::get('act') == 'getMP3FileLyric'){
+
 		require_once('lyric.api.php');
 		$document_srl = Context::get('document_srl');
 
@@ -37,7 +38,8 @@
 	}
 	else if($called_position == 'after_module_proc' && Context::getResponseMethod()!="XMLRPC") {
 		$document_srl = Context::get('document_srl');
-		if($document_srl){
+		$act = Context::get('act');
+		if($document_srl && !$act){
 
 			$oTemplate = &TemplateHandler::getInstance();
 			$output = $oTemplate->compile('./addons/lyric/tpl','lyric');

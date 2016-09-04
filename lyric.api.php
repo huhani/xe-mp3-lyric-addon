@@ -12,10 +12,9 @@ class Lyric {
 	public function getMD5Hash() {
 		$fd = fopen($this->filename, "rb");
  
-		$duration=0;
 		$block = fread($fd, 100);
 		$offset = $this->skipID3v2Tag($block);
-      fseek($fd, $offset, SEEK_SET);
+		fseek($fd, $offset, SEEK_SET);
 		return md5(fread($fd, 163840));
 	}
 

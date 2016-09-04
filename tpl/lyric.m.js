@@ -37,7 +37,9 @@ var setting = {
 
 				success: function(html) {
 					$('.lyric_before').remove();
-					if(html.error == -1) alert(html.message);
+					if(html.error == -1) {
+						return alert(html.message);
+					}
 					if(html != '' && html != 'null') {
 						$('.player_lyrics').html(html);
 						$('.0000.ms-00').remove();
