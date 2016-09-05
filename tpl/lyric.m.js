@@ -95,56 +95,6 @@ var setting = {
 	tmp_lyrics: null
 };
 
-function showLyric(a, b, c, d) {
-    html = "";
-    var e = a.length;
-    if (1 === e)
-        if (0 === (1 & a.index())) {
-            if (html += "<p>", html += "" == a.html() ? "<BR>" : a.html(), html += "</p>", b && c) {
-                var f = a.attr("class"),
-                    g = parseInt(f.substring(0, 2)),
-                    h = parseInt(f.substring(2, 4)),
-                    i = parseInt(f.substring(8, 10)),
-                    j = b.attr("class"),
-                    k = parseInt(j.substring(0, 2)),
-                    l = parseInt(j.substring(2, 4)),
-                    m = parseInt(j.substring(8, 10)),
-                    n = k + ":" + l + "." + m;
-                if (n == setting.last_lyric) return;
-                if (setting.last_lyric = n, d === !0) html += '<p style="color:#AAA;font-weight: normal;">' + ("" == b.html() ? "<BR>" : b.html()) + "</p>", null !== setting.next_lyric && clearTimeout(setting.next_lyric), setting.next_lyric = null;
-                else {
-                    var o = 10 * (100 * (l + 60 * (k - g) - h) + m - i);
-                    html += '<p style="color:#AAA;font-weight: normal;">', html += "" == c.html() ? "<BR>" : c.html(), html += "</p>", null === setting.next_lyric && (setting.next_lyric = setTimeout(function() {
-                        jQuery(".print_lyrics p").eq(1).html("" == b.html() ? "<BR>" : b.html()), setting.next_lyric = null
-                    }, o / 3))
-                }
-            }
-        } else {
-            if (b) {
-                var f = a.attr("class"),
-                    g = parseInt(f.substring(0, 2)),
-                    h = parseInt(f.substring(2, 4)),
-                    i = parseInt(f.substring(8, 10)),
-                    j = b.attr("class"),
-                    k = parseInt(j.substring(0, 2)),
-                    l = parseInt(j.substring(2, 4)),
-                    m = parseInt(j.substring(8, 10)),
-                    n = k + ":" + l + "." + m;
-                if (n == setting.last_lyric) return;
-                if (setting.last_lyric = n, d === !0) html += '<p style="color:#AAA;font-weight: normal;">' + ("" == b.html() ? "<BR>" : b.html()) + "</p>", null !== setting.next_lyric && clearTimeout(setting.next_lyric), setting.next_lyric = null;
-                else {
-                    var o = 10 * (100 * (l + 60 * (k - g) - h) + m - i);
-                    null === setting.next_lyric && (setting.next_lyric = setTimeout(function() {
-                        jQuery(".print_lyrics p").eq(0).html("" == b.html() ? "<BR>" : b.html()), setting.next_lyric = null
-                    }, o / 3)), html += '<p style="color:#AAA;font-weight: normal;">' + ("" == c.html() ? "<BR>" : c.html()) + "</p>"
-                }
-            }
-            html += "<p>" + ("" == a.html() ? "<BR>" : a.html()) + "</p>"
-        }
-    else
-        for (var p = 0; p < e; p++) html += "<p>" + a.eq(p).html().replace(/ /gi, "&nbsp;") + "</p>";
-    jQuery(".print_lyrics").html(html)
-}
 
 (function($){
 
