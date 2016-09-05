@@ -152,7 +152,7 @@ var setting = {
 							if(!is_audio){
 
 								audio.replaceWith("<center style='margin: 0 0 15px 0'><div class='lyrics'><div class='print_lyrics'></div></div><audio src=\""+src+"\" preload=\"meta\" loop=\"loop\" controls=\"\"></audio><br/></center>");
-
+								audio = $('div.xe_content audio');
 							} else {
 
 								audio.before("<center><div class='lyrics'><div class='print_lyrics' style='margin:7px 0 12px 0;'></div></div></center>");
