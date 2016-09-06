@@ -1,8 +1,22 @@
+var setting = {
+	title: null,
+	artist: null,
+	m: 0,
+	s: 0,
+
+	lyric_setInterval : null,
+	next_lyric: null,
+	last_lyric: null,
+	tmp_lyrics: null
+};
+
 function updateLyric(a) {
 	var b = a;
 	null != setting.lyric_setInterval && clearInterval(setting.lyric_setInterval), setting.lyric_setInterval = setInterval(function() {
-		b.paused && clearInterval(setting.lyric_setInterval), m = Math.floor(b.currentTime / 60), s = Math.floor(b.currentTime % 60), ms = parseInt(100 * ((b.currentTime % 60).toFixed(2) - s)), time = (m < 10 ? "0" : "") + m + (s < 10 ? "0" : "") + s;
+		b.paused && clearInterval(setting.lyric_setInterval); var m = Math.floor(b.currentTime / 60), s = Math.floor(b.currentTime % 60), ms = parseInt(100 * ((b.currentTime % 60).toFixed(2) - s)), time = (m < 10 ? "0" : "") + m + (s < 10 ? "0" : "") + s;
 		var a = jQuery(".player_lyrics ." + time);
+		setting.m = m;
+		setting.s = s;
 		if (a.length > 0) {
 			for (var d = (parseInt(a.attr("class").split("ms-")[1]), []), e = 0; e < a.length; e++) {
 				var f = jQuery(a[e]).attr("class").split("ms-")[1];
@@ -34,7 +48,7 @@ function updateLyric(a) {
 	}, 40)
 }
 
-function showLyric(a, b, c, d) {
+function showLyric(a, b, c, d) { // now, next, prev, chk
 	html = "";
 	var e = a.length;
 	if (1 === e)
@@ -85,15 +99,83 @@ function showLyric(a, b, c, d) {
 	jQuery(".print_lyrics").html(html)
 }
 
-var setting = {
-	title: null,
-	artist: null,
+function skipTo(time){
 
-	lyric_setInterval : null,
-	next_lyric: null,
-	last_lyric: null,
-	tmp_lyrics: null
-};
+	var m = setting.m = Math.floor(time / 60);
+	var s = setting.s = Math.floor(time % 60);
+
+	if(setting.lyric_setInterval != null) {
+		clearInterval(setting.lyric_setInterval);
+		setting.lyric_setInterval = null;
+	}
+
+	if(jQuery('.player_lyrics div').length > 2){
+		if(jQuery('.player_lyrics .'+((m<10?'0':'')+m+(s<10?'0':'')+s)).length != 0){
+
+			var this_target = jQuery('.player_lyrics .'+((m<10?'0':'')+m+(s<10?'0':'')+s));
+			if(this_target.length != 0){
+				if(this_target.length === 1){
+					var next_class = this_target.next().attr('class');
+					var prev_class = this_target.prev().attr('class');
+						if(!next_class && prev_class) {
+						prev_class = prev_class.replace(' ','.');
+						return showLyric(this_target,null,jQuery('.'+prev_class));
+					} else if (next_class && !prev_class) {
+						next_class = next_class.replace(' ','.');
+						return showLyric(this_target,jQuery('.'+next_class),null,true);
+					} else if(!next_class && !prev_class) {
+						return showLyric(this_target);
+					} else if(next_class && prev_class) {
+						next_class = next_class.replace(' ','.');
+						prev_class = prev_class.replace(' ','.');
+						return showLyric(this_target,jQuery('.'+next_class),jQuery('.'+prev_class),true);
+					}
+				} else return showLyric(jQuery('.player_lyrics .'+this_target.first().attr('class').replace(' ','.')),null,null);
+			}
+
+		}
+
+		while(1){
+			if(s<1){
+				if(m == 0) return +function($){
+					if(setting.next_lyric !== null) clearTimeout(setting.next_lyric);
+					setting.next_lyric = null;
+					$('.print_lyrics').show().html('<p>'+(setting.artist ? setting.artist+' - ' : '')+setting.title+'</p><p>[간주중]</p>');
+				}(jQuery);
+				else m--;
+				s = 60;
+			}
+			s--;
+			var this_target = jQuery('.player_lyrics .'+((m<10?'0':'')+m+(s<10?'0':'')+s));
+			if(this_target.length != 0){
+				if(this_target.length === 1){
+					var next_class = this_target.next().attr('class');
+					var prev_class = this_target.prev().attr('class');
+						if(!next_class && prev_class) {
+						prev_class = prev_class.replace(' ','.');
+						showLyric(this_target,null,jQuery('.'+prev_class));
+						break;
+					} else if (next_class && !prev_class) {
+						next_class = next_class.replace(' ','.');
+						showLyric(this_target,jQuery('.'+next_class),null,true);
+						break;
+					} else if(!next_class && !prev_class) {
+						showLyric(this_target);
+						break;
+					} else if(next_class && prev_class) {
+						next_class = next_class.replace(' ','.');
+						prev_class = prev_class.replace(' ','.');
+						showLyric(this_target,jQuery('.'+next_class),jQuery('.'+prev_class),true);
+					}
+				} else showLyric(jQuery('.player_lyrics .'+this_target.first().attr('class').replace(' ','.')),null,null);
+				break;
+			}
+		}
+
+	}	//END jQuery('.player_lyrics div').length > 2
+
+
+}
 
 
 (function($){
@@ -159,7 +241,15 @@ var setting = {
 								audio.wrap("<center></center>");
 							}
 							audio.bind('timeupdate', function () {
-							    updateLyric(this);
+								var last_time = setting.m*60 + setting.s;
+								var now_time = parseInt(this.currentTime);
+								var diff = now_time - last_time;
+
+								if(diff > 1 || diff < -1){
+									skipTo(this.currentTime);
+								} else{
+									updateLyric(this);
+								}
 							});
 
 							$('.player_lyrics').html(html);
