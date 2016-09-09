@@ -239,6 +239,8 @@ function skipTo(time){
 
 								audio.before("<center><div class='lyrics'><div class='print_lyrics' style='margin:7px 0 12px 0;'></div></div></center>");
 								audio.wrap("<center></center>");
+								audio.attr('autoplay') === 'autoplay' && audio[0].paused && audio[0].play();
+
 							}
 							audio.bind('timeupdate', function () {
 								var last_time = setting.m*60 + setting.s;
