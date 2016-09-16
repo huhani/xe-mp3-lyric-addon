@@ -35,8 +35,7 @@ class Lyric {
 			$lrc = $lrc[0];
 			if(!$lrc) return false;
 
-			$lrc = str_replace('&lt;','<',$lrc);
-			$lrc = str_replace('&gt;','>',$lrc);
+			$lrc = str_replace('&lt;br&gt;','<br>',$lrc);
 			$lrc = str_replace('<strLyric>','',$lrc);
 			$lrc = str_replace('</strLyric>','',$lrc);
 
