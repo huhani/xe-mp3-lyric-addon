@@ -7,7 +7,6 @@ var setting = {
 	lyric_setInterval : null,
 	next_lyric: null,
 	last_lyric: null,
-	tmp_lyrics: null
 };
 
 function updateLyric(a) {
@@ -140,7 +139,7 @@ function skipTo(time){
 				if(m == 0) return +function($){
 					if(setting.next_lyric !== null) clearTimeout(setting.next_lyric);
 					setting.next_lyric = null;
-					$('.print_lyrics').show().html('<p>'+(setting.artist ? setting.artist+' - ' : '')+setting.title+'</p><p>[간주중]</p>');
+					$('.print_lyrics').show().html('<p>'+(setting.artist && setting.artist !== setting.title ? (setting.artist+' - ') : '')+setting.title+'</p><p>[간주중]</p>');
 				}(jQuery);
 				else m--;
 				s = 60;
@@ -260,7 +259,7 @@ function skipTo(time){
 							setting.title = $('.lyric_title').text();
 							setting.artist = $('.lyric_artist').text();
 							$('.lyric_title, .lyric_artist, .lyric_file').remove();
-							$('.print_lyrics').show().html('<p>'+setting.artist+' - '+setting.title+'</p><p>[간주중]</p>');
+							$('.print_lyrics').show().html('<p>'+(setting.artist && setting.artist !== setting.title ? (setting.artist+' - ') : '')+setting.title+'</p><p>[간주중]</p>');
 
 						}
 					}

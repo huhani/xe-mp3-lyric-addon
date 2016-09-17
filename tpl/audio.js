@@ -863,7 +863,7 @@ function setDelayTime(m, s, ms){
 						if(d.m == 0) return +function($){
 							if(setting.next_lyric !== null) clearTimeout(setting.next_lyric);
 							setting.next_lyric = null;
-							$('.print_lyrics').show().html('<p>'+(setting.artist ? setting.artist+' - ' : '')+setting.title+'</p><p>[간주중]</p>');
+							$('.print_lyrics').show().html('<p>'+(setting.artist && setting.artist !== setting.title ? (setting.artist+' - ') : '')+setting.title+'</p><p>[간주중]</p>');
 						}(jQuery);
 						else d.m--;
 						d.s = 60;
