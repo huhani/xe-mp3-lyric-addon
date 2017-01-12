@@ -15,7 +15,9 @@ class Lyric {
 		$block = fread($fd, 100);
 		$offset = $this->skipID3v2Tag($block);
 		fseek($fd, $offset, SEEK_SET);
-		return md5(fread($fd, 163840));
+		$hash = md5(fread($fd, 163840));
+		fclose($fd);
+		return $hash;
 	}
 
 
